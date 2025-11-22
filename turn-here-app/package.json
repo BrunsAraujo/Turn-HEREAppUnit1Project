@@ -1,7 +1,7 @@
 {
   "name": "turn-here-app",
   "version": "0.0.0",
-  "homepage": "https://BrunsAraujo.github.io/Turn-HEREAppUnit1Project",
+  "homepage": "https://BrunsAraujo.github.io/Turn-HEREAppUnit1Project/turn-here-app",
   "private": true,
   "type": "module",
   "scripts": {
