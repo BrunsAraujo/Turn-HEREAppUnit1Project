@@ -1,3 +1,4 @@
+//Adds city randomizer functionality
 import React, { useState } from 'react';
 import { cityData } from "./cityData";
 
