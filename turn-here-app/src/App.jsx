@@ -1,35 +1,90 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+//Initially it rendered rendering conditionally in single view/static. Using selectedCity state to toggle between CityList and CityItinerary
+//adds routing with react-router-dom and login (hardcoded)
+//City selection via props, test use for city selection logic - no log in
+//Adds rounting to /login and /cities, city selection via props, better login for user
+//adds the Search, Footer and routes both. CityItinerary3 supports both props and URL. It betters the user experience.
+//adds search citinerary3, search3, tripSaver for loggedin users(conditional rendering).
+// Login state tracked va loggedInUser. Search 3 inclines inline itinerary view
+// App7.jsx adds the about page and routes it
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import About from "./components/About";
+import CollapsibleMenu from "./components/CollapsibleMenu";
+import CityList from "./components/CityList";
+import CityItinerary from "./components/CityItinerary";
+import Search from "./components/Search.jsx";
+import LoginForm from "./components/LoginForm";
+import TripSaver from "./components/TripSaver";
+import Footer from "./components/Footer.jsx";
+import CityRandomizer from "./components/CityRandomizer";
+import "./App.css";
+import "./index.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+
+  const handleLogin = (username) => {
+    setLoggedInUser(username);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: "#f0f8ff" }}>
+        <header>
+        <Header />
+        </header>
+
+        <nav>
+        <CollapsibleMenu />
+        </nav>
+        <main div style={{ flex: 1 }}>
+          <Routes>
+          <Route path="/about" element={<About />} />
+
+            <Route
+              path="/login"
+              element={
+                !loggedInUser ? (
+                  <LoginForm onLogin={handleLogin} />
+                ) : (
+                  <TripSaver user={loggedInUser} />
+                )
+              }
+            />
+            <Route
+              path="/cities"
+              element={
+                <div className="app">
+                  
+                  {!selectedCity ? (
+                    <CityList onSelectCity={setSelectedCity} />
+                  ) : (
+                    <CityItinerary
+                      city={selectedCity}
+                      onBack={() => setSelectedCity(null)}
+                    />
+                  )}
+                </div>
+              }
+            />
+            <Route
+              path="/search"
+              element={<Search onSelectCity={setSelectedCity} />}
+            />
+            <Route path="/cities/:cityName" element={<CityItinerary />} />
+            <Route path="/CityRandomizer" element={<CityRandomizer />} />
+
+          </Routes>
+          </main>
+        </div>
+      <footer>
+        <Footer />
+        </footer>
+      
+    </Router>
+  );
 }
 
-export default App
+export default App;
