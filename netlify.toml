@@ -1,0 +1,4 @@
+[build]
+        base = "turn-here-app"
+        command = "npm run build"
+        puslish = "dist"
